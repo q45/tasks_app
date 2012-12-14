@@ -117,6 +117,15 @@ app.put('/tasks/:id', function(req, res) {
   });
 });
 
+app.del('/tasks/:id', function(req, res) {
+  Task.findById(req.params.id, function(err, doc) {
+    if(!doc) return next(new NotFound('Document not found'));
+    doc.remove(function() {
+      res.redirect('/tasks');
+    });
+  });
+});
+
 app.get('/tasks', function(req, res) {
   Task.find({}, function(err, docs) {
     res.render('tasks/index', {
