@@ -22,8 +22,12 @@ var express = require('express')
   var Schema = mongoose.Schema;
   var ObjectId = Schema.ObjectId;
 
+  function validatePresenceOf(value) {
+    return value && value.length
+  }
+
   var Task = new Schema({
-    task :String
+   
   });
   var Task = mongoose.model('Task', Task);
 
