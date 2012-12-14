@@ -1,5 +1,9 @@
 h1 Your Tasks
 
+- if(typeof flash != 'undefined')
+   include /mixins/flash-messages
+   mixin flash-messages(flash)
+
 - if(docs.length)
  table
   tr

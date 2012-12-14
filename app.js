@@ -45,8 +45,11 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "nodejsexample"}));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  
 });
 
 app.configure('development', function(){
@@ -80,7 +83,8 @@ app.get('/user/:id', function(req, res) {
 
 app.get('/tasks/new', function(req, res) {
   res.render('tasks/new.jade', {
-    title: 'New Tasks'
+    title: 'New Tasks',
+    flash: req.flash()
   });
 });
 
@@ -88,8 +92,10 @@ app.post('/tasks', function(req, res) {
  var task = new Task(req.body.task);
  task.save(function(err) {
   if(!err) {
+    req.flash('info', 'Task Created');
     res.redirect('/tasks');
   } else {
+    req.flash('warning', err );
     res.redirect('/tasks/new');
   }
  });
@@ -99,7 +105,8 @@ app.get('/tasks/:id/edit', function(req, res) {
   Task.findById(req.params.id, function(err, doc) {
       res.render('tasks/edit', {
         title: 'Edit Task View',
-        task: doc
+        task: doc,
+        flash: req.flash()
       });
   });
 });
@@ -109,6 +116,7 @@ app.put('/tasks/:id', function(req, res) {
     doc.task = req.body.task.task;
     doc.save(function(err) {
       if(!err) {
+        req.flash('info', 'Task updated');
         res.redirect('/tasks');
       } else {
         //error handeling
@@ -130,7 +138,8 @@ app.get('/tasks', function(req, res) {
   Task.find({}, function(err, docs) {
     res.render('tasks/index', {
     title: 'Todos Index View',
-    docs : docs
+    docs : docs,
+    flash: req.flash()
     });
   });
 });
