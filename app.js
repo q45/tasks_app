@@ -1,4 +1,4 @@
-
+var port = (process.env.PORT || 3000);
 /**
  * Module dependencies.
  */
@@ -147,5 +147,5 @@ app.get('/tasks', function(req, res) {
   });
 });
 
-app.listen(3001);
+app.listen(port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
